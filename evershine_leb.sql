@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 06, 2026 at 03:23 AM
+-- Generation Time: Mar 12, 2026 at 12:57 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -29,6 +29,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `income_expense_items` (
   `id` int(11) NOT NULL,
+  `date_submitted` datetime NOT NULL DEFAULT current_timestamp(),
   `portfolio_name` varchar(200) DEFAULT NULL,
   `Month` varchar(200) NOT NULL,
   `year` int(11) NOT NULL,
@@ -42,8 +43,13 @@ CREATE TABLE `income_expense_items` (
 -- Dumping data for table `income_expense_items`
 --
 
-INSERT INTO `income_expense_items` (`id`, `portfolio_name`, `Month`, `year`, `Title`, `expense_income`, `cost_profit`, `money_left`) VALUES
-(21, 'other', 'January', 2026, 'Starting The Finance', 'income', 20252, 20252.00)
+INSERT INTO `income_expense_items` (`id`, `date_submitted`, `portfolio_name`, `Month`, `year`, `Title`, `expense_income`, `cost_profit`, `money_left`) VALUES
+(21, '2026-03-12 02:39:56', 'other', 'January', 2026, 'Starting The Finance', 'income', 20252, 20252.00),
+(33, '2026-03-12 02:39:56', 'Parwaaz', 'February', 2026, 'Parwaaz Closing Finance, Cake etc', 'expense', 18342, 1910.00),
+(34, '2026-03-12 02:39:56', 'Ipd', 'March', 2026, 'USB + HUB', 'expense', 600, 1310.00),
+(36, '2026-03-12 02:39:56', 'Donation', 'March', 2026, 'Recieved', 'income', 100, 1410.00),
+(39, '2026-03-12 02:39:56', 'Ipd', 'March', 2026, 'USB + HUB', 'expense', 400, 1010.00),
+(43, '2026-03-12 05:22:55', 'Ipd', 'March', 2026, 'Gaming', 'income', 3300, 4310.00);
 
 -- --------------------------------------------------------
 
@@ -97,7 +103,7 @@ ALTER TABLE `member_login`
 -- AUTO_INCREMENT for table `income_expense_items`
 --
 ALTER TABLE `income_expense_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 
 --
 -- AUTO_INCREMENT for table `member_login`
