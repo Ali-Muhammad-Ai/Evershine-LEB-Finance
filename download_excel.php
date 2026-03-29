@@ -31,7 +31,12 @@ foreach ($run as $d) {
     }
 }
 $saving         = $totalIncome - $totalExpense;
-$openingBalance = !empty($run) ? (float)$run[0]['cost_profit'] + (float)$run[0]['money_left'] : 0;
+$first = !empty($run) ? $run[0] : null;
+$openingBalance = $first
+    ? (($first['expense_income'] === 'income')
+        ? (float)$first['money_left'] - (float)$first['cost_profit']
+        : (float)$first['money_left'] + (float)$first['cost_profit'])
+    : 0;
 $cashInHand     = !empty($run) ? (float)end($run)['money_left'] : 0;
 $generatedOn    = date('d M Y');
 
@@ -90,7 +95,7 @@ $stylesXml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
   </numFmts>
   <fonts count="16">
     <font><sz val="11"/><color rgb="'.$DARK_TEXT.'"/><name val="Calibri"/></font>
-    <font><sz val="14"/><b/><color rgb="'.$GOLD.'"/><name val="Calibri"/></font>
+    <font><sz val="14"/><b/><color rgb="'.$WHITE.'"/><name val="Calibri"/></font>
     <font><sz val="20"/><b/><color rgb="'.$WHITE.'"/><name val="Calibri"/></font>
     <font><sz val="12"/><b/><color rgb="'.$HDR_SUB.'"/><name val="Calibri"/></font>
     <font><sz val="11"/><b/><color rgb="'.$WHITE.'"/><name val="Calibri"/></font>
@@ -218,7 +223,7 @@ $r++;
 
 if (!empty($incomeRows)) {
     foreach ($incomeRows as $i => $d) {
-        $label = $d['portfolio_name'].'  —  '.$d['Title'];
+        $label = $d['portfolio_name'].' ('.$d['Title'].')';
         $sL = ($i%2===0) ? 'dataIncEvenL' : 'dataIncOddL';
         $sR = ($i%2===0) ? 'dataIncEvenR' : 'dataIncOddR';
         $cells[] = [$r, 'B', 's', $label,                  $sL];
@@ -241,7 +246,7 @@ $r++;
 
 if (!empty($expenseRows)) {
     foreach ($expenseRows as $i => $d) {
-        $label = $d['portfolio_name'].'  —  '.$d['Title'];
+        $label = $d['portfolio_name'].' ('.$d['Title'].')';
         $sL = ($i%2===0) ? 'dataExpEvenL' : 'dataExpOddL';
         $sR = ($i%2===0) ? 'dataExpEvenR' : 'dataExpOddR';
         $cells[] = [$r,'B','s',$label,$sL];

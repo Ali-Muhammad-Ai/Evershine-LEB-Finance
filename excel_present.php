@@ -365,7 +365,10 @@ $totalIncome  = 0;
                             Rs. <?php
                                 if (!empty($run)) {
                                     $first = $run[0];
-                                    echo number_format($first['cost_profit'] + $first['money_left'], 2);
+                                    $openingBalance = ($first['expense_income'] === 'income')
+                                        ? (float)$first['money_left'] - (float)$first['cost_profit']
+                                        : (float)$first['money_left'] + (float)$first['cost_profit'];
+                                    echo number_format($openingBalance, 2);
                                 } else { echo '0.00'; }
                             ?>
                         </td>
