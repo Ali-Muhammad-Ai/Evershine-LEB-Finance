@@ -212,6 +212,10 @@ $r++; // header bottom padding
 
 $cells[] = [$r, 'B', 's', '', 'divider']; $cells[] = [$r, 'C', 's', '', 'divider']; $r++;
 
+// Opening Balance row (above Description header)
+$cells[] = [$r,'B','s','Opening Balance','summaryL'];
+$cells[] = [$r,'C','n',$openingBalance,'summaryR']; $r++;
+
 $cells[] = [$r, 'B', 's', 'Description',  'colHdrL'];
 $cells[] = [$r, 'C', 's', 'Amount (Rs)',  'colHdrR'];
 $r++;
@@ -265,9 +269,7 @@ $cells[] = [$r,'B','s','','divider']; $cells[] = [$r,'C','s','','divider']; $r++
 // Summary
 $cells[] = [$r,'B','s','Saving / (Excess Payments)','savingL'];
 $cells[] = [$r,'C','n',(float)$saving,'savingR']; $r++;
-$cells[] = [$r,'B','s','Opening Balance','summaryL'];
-$cells[] = [$r,'C','n',$openingBalance,'summaryR']; $r++;
-$cells[] = [$r,'B','s','Cash In Hand','summaryL'];
+$cells[] = [$r,'B','s','Closing Balance','summaryL'];
 $cells[] = [$r,'C','n',$cashInHand,'summaryR']; $r++;
 
 $cells[] = [$r,'B','s','','divider']; $cells[] = [$r,'C','s','','divider']; $r++;

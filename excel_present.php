@@ -191,6 +191,49 @@ $totalIncome  = 0;
             color: var(--purple-lite); padding: 4px 14px; border-radius: 50px;
         }
 
+        /* OPENING / CLOSING BALANCE BANNER */
+        .balance-banner {
+            display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap;
+        }
+        .balance-pill {
+            flex: 1; min-width: 180px;
+            border-radius: 14px; padding: 1rem 1.4rem;
+            display: flex; flex-direction: column; gap: 4px;
+            position: relative; overflow: hidden;
+        }
+        .balance-pill::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+        }
+        .balance-pill.opening {
+            background: rgba(168,85,247,0.1);
+            border: 1px solid rgba(168,85,247,0.25);
+        }
+        .balance-pill.opening::before {
+            background: linear-gradient(90deg, transparent, #a855f7, transparent);
+        }
+        .balance-pill.closing {
+            background: rgba(16,185,129,0.08);
+            border: 1px solid rgba(16,185,129,0.25);
+        }
+        .balance-pill.closing::before {
+            background: linear-gradient(90deg, transparent, #10b981, transparent);
+        }
+        .balance-pill .pill-label {
+            font-size: 0.62rem; font-weight: 700; letter-spacing: 0.18em;
+            text-transform: uppercase;
+        }
+        .balance-pill.opening .pill-label { color: var(--purple-lite); }
+        .balance-pill.closing .pill-label { color: #34d399; }
+        .balance-pill .pill-amount {
+            font-family: 'Syne', sans-serif; font-size: 1.3rem; font-weight: 800;
+        }
+        .balance-pill.opening .pill-amount { color: var(--text); }
+        .balance-pill.closing .pill-amount { color: #34d399; }
+        .balance-pill .pill-icon {
+            position: absolute; right: 1.2rem; top: 50%; transform: translateY(-50%);
+            opacity: 0.15; font-size: 2rem; pointer-events: none;
+        }
+
         /* RECEIPTS & PAYMENTS TABLE */
         .rp-table { width: 100%; border-collapse: collapse; }
         .rp-table th, .rp-table td {
@@ -217,10 +260,9 @@ $totalIncome  = 0;
         .rp-table .expense-amt { color: #f87171; }
         .rp-table .saving-row td { font-weight: 700; background: rgba(124,58,237,0.15); }
         .rp-table .saving-amt  { color: var(--gold); }
-        .rp-table .cash-row td { font-weight: 700; background: rgba(245,158,11,0.08); }
-        .rp-table .cash-amt    { color: #fcd34d; font-size: 1rem; }
+        .rp-table .cash-row td { font-weight: 700; background: rgba(16,185,129,0.1); }
+        .rp-table .cash-amt    { color: #34d399; font-size: 1rem; }
         .rp-table .spacer td   { height: 8px; background: transparent; border: none; }
-        .rp-table .balance-row td { background: rgba(168,85,247,0.06); }
         .rp-table tbody tr:hover { background: rgba(124,58,237,0.06); }
 
         @media (max-width: 700px) {
@@ -297,6 +339,31 @@ $totalIncome  = 0;
                 <div class="period">Receipts &amp; Payments — <?= htmlspecialchars($selectedMonth) ?> <?= htmlspecialchars($selectedYear) ?></div>
             </div>
 
+            <?php
+            $openingBalance = 0;
+            if (!empty($run)) {
+                $first = $run[0];
+                $openingBalance = ($first['expense_income'] === 'income')
+                    ? (float)$first['money_left'] - (float)$first['cost_profit']
+                    : (float)$first['money_left'] + (float)$first['cost_profit'];
+            }
+            $closingBalance = !empty($run) ? (float)end($run)['money_left'] : 0;
+            ?>
+
+            <!-- OPENING / CLOSING BALANCE BANNER -->
+            <div class="balance-banner">
+                <div class="balance-pill opening">
+                    <span class="pill-label">Opening Balance</span>
+                    <span class="pill-amount">Rs. <?= number_format($openingBalance, 2) ?></span>
+                    <span class="pill-icon">◈</span>
+                </div>
+                <div class="balance-pill closing">
+                    <span class="pill-label">Closing Balance</span>
+                    <span class="pill-amount">Rs. <?= number_format($closingBalance, 2) ?></span>
+                    <span class="pill-icon">✦</span>
+                </div>
+            </div>
+
             <table class="rp-table">
                 <thead>
                     <tr>
@@ -358,27 +425,11 @@ $totalIncome  = 0;
 
                     <tr class="spacer"><td colspan="2"></td></tr>
 
-                    <!-- OPENING BALANCE -->
-                    <tr class="balance-row">
-                        <td>Opening Balance</td>
-                        <td class="amount-cell" style="color:var(--muted);">
-                            Rs. <?php
-                                if (!empty($run)) {
-                                    $first = $run[0];
-                                    $openingBalance = ($first['expense_income'] === 'income')
-                                        ? (float)$first['money_left'] - (float)$first['cost_profit']
-                                        : (float)$first['money_left'] + (float)$first['cost_profit'];
-                                    echo number_format($openingBalance, 2);
-                                } else { echo '0.00'; }
-                            ?>
-                        </td>
-                    </tr>
-
-                    <!-- CASH IN HAND -->
+                    <!-- CLOSING BALANCE -->
                     <tr class="cash-row">
-                        <td>Cash In Hand</td>
+                        <td>Closing Balance</td>
                         <td class="amount-cell cash-amt">
-                            Rs. <?= !empty($run) ? number_format(end($run)['money_left'], 2) : '0.00' ?>
+                            Rs. <?= number_format($closingBalance, 2) ?>
                         </td>
                     </tr>
 
