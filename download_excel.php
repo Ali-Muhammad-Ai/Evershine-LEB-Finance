@@ -274,7 +274,7 @@ $cells[] = [$r,'C','n',$cashInHand,'summaryR']; $r++;
 
 $cells[] = [$r,'B','s','','divider']; $cells[] = [$r,'C','s','','divider']; $r++;
 
-$cells[] = [$r,'B','s','Generated on: '.$generatedOn.'   ·   Evershine Area Committee Finance Report','italicL'];
+$cells[] = [$r,'B','s','Generated on: '.$generatedOn.'   ·   LEB For Gulshan, Area Committee Evershine Finance Report','italicL'];
 $cells[] = [$r,'C','s','','italicR'];
 $merges[] = "B{$r}:C{$r}";
 $r++;
